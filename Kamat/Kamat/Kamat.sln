@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Kamat", "Kamat\Kamat.vcxproj", "{FB601AE3-5ADE-4170-9A4B-4D270E68108B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB601AE3-5ADE-4170-9A4B-4D270E68108B}.Debug|x64.ActiveCfg = Debug|x64
+		{FB601AE3-5ADE-4170-9A4B-4D270E68108B}.Debug|x64.Build.0 = Debug|x64
+		{FB601AE3-5ADE-4170-9A4B-4D270E68108B}.Debug|x86.ActiveCfg = Debug|Win32
+		{FB601AE3-5ADE-4170-9A4B-4D270E68108B}.Debug|x86.Build.0 = Debug|Win32
+		{FB601AE3-5ADE-4170-9A4B-4D270E68108B}.Release|x64.ActiveCfg = Release|x64
+		{FB601AE3-5ADE-4170-9A4B-4D270E68108B}.Release|x64.Build.0 = Release|x64
+		{FB601AE3-5ADE-4170-9A4B-4D270E68108B}.Release|x86.ActiveCfg = Release|Win32
+		{FB601AE3-5ADE-4170-9A4B-4D270E68108B}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {78E6900F-1BE5-4623-B1C2-4EDF4ACE1219}
+	EndGlobalSection
+EndGlobal
