@@ -1,4 +1,9 @@
 ﻿  Main.cpp
-E:\project\Graduation Project\Kamat\Kamat\Kamat\Main.cpp(40,21): warning C4018: '<': signed/unsigned mismatch
-E:\project\Graduation Project\Kamat\Kamat\Kamat\Main.cpp(92,21): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\Kamat\Kamat\Kamat\Main.cpp(60,20): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\Kamat\Kamat\Kamat\Main.cpp(67,21): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\Kamat\Kamat\Kamat\Main.cpp(102,21): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\Kamat\Kamat\Kamat\Main.cpp(106,21): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\Kamat\Kamat\Kamat\Main.cpp(188,21): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\Kamat\Kamat\Kamat\Main.cpp(206,22): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\Kamat\Kamat\Kamat\Main.cpp(225,22): warning C4018: '<': signed/unsigned mismatch
   Kamat.vcxproj -> E:\project\Graduation Project\Kamat\Kamat\Debug\Kamat.exe

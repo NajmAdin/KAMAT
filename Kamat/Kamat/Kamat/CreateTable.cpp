@@ -5,11 +5,27 @@
 
 #include<string>
 #include<iostream>
+#include<vector>
+#include<utility>
+#include <fstream>
 
 using namespace std;
 
-inline bool Create_Table() {
-	cout << "done\n";
+	//_wmkdir("");
+
+inline bool Create_Table(string Name) {
 	
+
+	cout << "done\n";
+	vector<pair<string, string>> ColumnAndType;
+	
+	return 0;
+}
+
+inline bool IfTableExist(string Name) {
+	/*ofstream dbFile;
+	dbFile.open("example.txt");
+	dbFile << "Writing this to a file.\n";
+	dbFile.close();*/
 	return 0;
 }
