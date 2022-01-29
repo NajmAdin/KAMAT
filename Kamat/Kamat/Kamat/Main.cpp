@@ -19,7 +19,7 @@ using namespace std;
 
 string const mainDirctory = "C:/Kamat/DataBases";
 vector<string> dblist;
-
+string CurntlyDB;
 
 
 bool Createdb(string name) {
@@ -38,7 +38,13 @@ bool Createdb(string name) {
 	dblist.push_back(name);
 	dblistfile << name << "\n";
 	dblistfile.close();
-	//_mkdir("C:/Kamat/DataBases/"+name);
+	string str= "C:/Kamat/DataBases/" + name;
+	char* arr;
+	arr = &str[0];
+	_mkdir(arr);
+	ofstream dbFile(mainDirctory + "/" + name + "/" + name + ".db.km");
+	dbFile << "0\n";
+	dbFile.close();
 	return true;
 }
 
@@ -142,6 +148,33 @@ bool DELETE( ) {
 
 	return 0;
 }
+bool USE() {
+	string Suffix;
+	cin >> Suffix;
+	for (int i = 0; i < Suffix.size(); i++) {
+		Suffix[i] = tolower(Suffix[i]);
+	}
+	for (string str : dblist) {
+		if (str == Suffix) {
+			CurntlyDB = Suffix;
+			return true;
+		}
+	}
+	return 0;
+}
+
+void loadDBList() {
+	ifstream dblistfile(mainDirctory + ".km");
+	int num;
+	dblistfile >> num;
+	string indb;
+	while (num--) {
+		dblistfile >> indb;
+		dblist.push_back(indb);
+	}
+	dblistfile.close();
+}
+
 
 void stup() {
 	ifstream ifile;
@@ -159,24 +192,14 @@ void stup() {
 		MyFile.close();
 	}
 
+	loadDBList();
+	CurntlyDB = "any";
 }
-void loadDBList() {
-	ifstream dblistfile(mainDirctory + ".km");
-	int num;
-	dblistfile >> num;
-	string indb;
-	while (num--) {
-		dblistfile >> indb;
-		dblist.push_back(indb);
-	}
-	dblistfile.close();
-}
-
-
 
 int main() {
 	stup();
-	loadDBList();
+
+
 
 	string Quary;
 
@@ -220,13 +243,14 @@ int main() {
 		else if (Quary == "CREATE") {
 			CREATE();
 		}
+		//SHOW DATABASES;
 		else if (Quary == "SHOW") {
 			string Suffix;
 			cin >> Suffix;
 			for (int i = 0; i < Suffix.size(); i++) {
 				Suffix[i] = toupper(Suffix[i]);
 			}
-			if (Suffix == "DATABASES"|| Suffix == "DATABASES;") {
+			if (Suffix == "DATABASES") {
 				for (string str : dblist) {
 					cout << str << "\n";
 				}
@@ -235,7 +259,14 @@ int main() {
 				cout << "syntax error\n";
 			}
 		}
-		//SHOW DATABASES;
+		else if (Quary == "USE") {
+			if (USE()) {
+				cout << CurntlyDB << " is in use now\n";
+			}
+			else {
+				cout << CurntlyDB << " is not in databases list !!\n";
+			}
+		}
 		else {
 			cout << "syntax error\n";
 		}

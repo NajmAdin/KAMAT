@@ -4,7 +4,7 @@ x.db.km
 
 a.t.km
 
-a-sub.t.km
+a.sub.t.km
 
 #include<kamat.cpp>
 
