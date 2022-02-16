@@ -18,12 +18,12 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CreateTable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="C:\Kamat\DataBases.km">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="C:\Kamat\DataBases\any\any.db.km">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
