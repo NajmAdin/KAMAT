@@ -9,6 +9,7 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include<algorithm>
 #include<utility>
 #include<direct.h>
 #include<stdio.h>
@@ -19,6 +20,15 @@
 
 
 using namespace std;
+/*
+	console Handler
+					to write read
+					SetConsoleTextAttribute(hConsole, 12);
+				cout << "syntax error\n";
+				to write white
+				SetConsoleTextAttribute(hConsole, 15);
+*/
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 
 string const mainDirctory = "C:/Kamat/DataBases";
@@ -112,15 +122,10 @@ string RegularDataTaype(string TY) {
 
 
 	int stop = 0;
-	if (TY[TY.size() - 1] == ',') {
-		stop++;
-		if (TY[TY.size() - 2] == ')') {
-			stop++;
-		}
-	}
-	else if (TY[TY.size() - 1] == ')') {
+	if (TY[TY.size() - 1] == ','|| TY[TY.size() - 1] == ')') {
 		stop++;
 	}
+	
 
 	string DTY = "";
 	for (int i = 0; i < TY.size()-stop; i++) {
@@ -131,6 +136,38 @@ string RegularDataTaype(string TY) {
 			return DataTypes[i];
 		}
 	}
+	int idx = 0;
+	for (int i = 0; i < TY.size(); i++) {
+		if (idx < 7) {
+			if (VarCh[idx] != toupper(TY[i])) {
+				return "non";
+			}
+			idx++;
+		}
+		else {
+			if (TY[i] != '(') {
+				return "non";
+			}
+			i++;
+			int num = 0;
+			string strnum = "";
+			for (; i < TY.size(); i++) {
+				if (isdigit(TY[i])) {
+					num *= 10;
+					num += (TY[i] - '0');
+				}
+				else if (TY[i] == ')') {
+					while (num) {
+						strnum += ((num % 10)+'0');
+						num /= 10;
+					}
+					reverse(strnum.begin(),strnum.end());
+					return (VarCh + '(' + strnum + ')');
+				}
+			}
+		}
+	}
+
 	return "non";
 }
 
@@ -167,13 +204,16 @@ bool Create_Table(string Name) {
 			for (int i = 0; i < TY.size(); i++) {
 				TY[i] = tolower(TY[i]);
 			}
-			if (TY == PKey[1]) {
+			if (TY == PKey[1]|| TY == (PKey[1]+',') || TY == (PKey[1]+')')) {
 				if (primKeyIdx != -1) {
-					cout << "In this version you cannot use more than one primary key";
+					cout << "In this version you cannot use more than one primary key\n";
 					return 0;
 				}
 				else {
 					primKeyIdx = idx;
+				}
+				if(TY[TY.size()-1]==')'){
+					break;
 				}
 			}
 		}
@@ -181,13 +221,20 @@ bool Create_Table(string Name) {
 			idx++;
 			string TYBack = RegularDataTaype(TY);
 			if (TYBack == "non") {
-				cout << "non\n";//we need to write VarChar(n) Fun
+				cout << "syntax error\n";
 				return 0;
 			}
 			else {
 				ColumnAndType.push_back({NM, TYBack});
 				if (TY[TY.size() - 1] == ')') {
-					break;
+					if (tolower(TY[0]) != 'v') {
+						break;
+					}
+					else {
+						if (TY[TY.size() - 2] == ')') {
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -366,7 +413,22 @@ bool USE() {
 	return 0;
 }
 
-
+void ShTables() {
+	ifstream dbFile(mainDirctory + "/" + CurntlyDB + "/" + CurntlyDB + ".db.km");
+	int num;
+	dbFile >> num;
+	if (num != 0) {
+		cout << "Tables List\n";
+		string ExTable;
+		for (int i = 0; i < num; i++) {
+			dbFile >> ExTable;
+			cout << ExTable << "\n";
+		}
+	}
+	else {
+		cout << "No Tables\n";
+	}
+}
 
 void stup() {
 	ifstream ifile;
@@ -447,8 +509,13 @@ int main() {
 					cout << str << "\n";
 				}
 			}
+			else if (Suffix=="TABLES") {
+				ShTables();
+			}
 			else {
+				SetConsoleTextAttribute(hConsole, 12);
 				cout << "syntax error\n";
+				SetConsoleTextAttribute(hConsole, 15);
 			}
 		}
 		else if (Quary == "USE") {
@@ -456,7 +523,7 @@ int main() {
 				cout << CurntlyDB << " is in use now\n";
 			}
 			else {
-				cout << CurntlyDB << " is not in databases list !!\n";
+				cout <<"Not in the databases list !!\n";
 			}
 		}
 		else {
