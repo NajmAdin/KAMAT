@@ -19,6 +19,7 @@
 
 
 
+
 using namespace std;
 /*
 	console Handler
@@ -27,6 +28,10 @@ using namespace std;
 				cout << "syntax error\n";
 				to write white
 				SetConsoleTextAttribute(hConsole, 15);
+				green
+				SetConsoleTextAttribute(hConsole, 10);
+				yallow
+				SetConsoleTextAttribute(hConsole, 14);
 */
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -34,11 +39,21 @@ HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 string const mainDirctory = "C:/Kamat/DataBases";
 vector<string> dblist;
 string CurntlyDB;
-vector<string>DataTypes = { "BOOL","BOOLEAN","INT","INTEGER","FLOAT","DATE","TIME","YEAR","DATETIME" };
+vector<string>DataTypes = { "BOOL","BOOLEAN","INT","INTEGER","FLOAT" };
 string VarCh = "VARCHAR";
 string PKey[2] = { "primary","key" };
 
+
+int HashIt(string s) {
+	long long res = 0;
+	for (int i = 0; i < s.size(); i++) {
+		res += s[i];
+	}
+	return (res % 101);
+}
+
 void loadDBList() {
+	dblist.clear();
 	ifstream dblistfile(mainDirctory + ".km");
 	int num;
 	dblistfile >> num;
@@ -115,7 +130,7 @@ bool addTable(string name) {
 }
 
 
-string RegularDataTaype(string TY) {
+string RegularDataType(string TY) {
 	if (TY.size() < 3) {
 		return "non";
 	}
@@ -219,7 +234,7 @@ bool Create_Table(string Name) {
 		}
 		else {
 			idx++;
-			string TYBack = RegularDataTaype(TY);
+			string TYBack = RegularDataType(TY);
 			if (TYBack == "non") {
 				cout << "syntax error\n";
 				return 0;
@@ -257,10 +272,292 @@ bool Create_Table(string Name) {
 }
 
 
+string inputDataType(string input,string Type) {
+	
+	if (Type == DataTypes[0] || Type == DataTypes[1]) {
+		
+		if ( input == "0"|| input == "false") {
+			return"0";
+		}
+		else if (input == "1"|| input == "true") {
+			return"1";
+		}
+		else {
+			SetConsoleTextAttribute(hConsole, 12);
+			cout << "input error\n";
+			SetConsoleTextAttribute(hConsole, 15);
+			return "";
+		}
+	}
+	else if (Type == DataTypes[2] || Type == DataTypes[3]) {
+		string sol = "";
+		int i = 0;
+		if (input[0] == '-') { 
+			i = 1;
+			sol += '-';
+		}
+		for (; i < input.size(); i++) {
+			if (!isdigit(input[i])) {
+				SetConsoleTextAttribute(hConsole, 12);
+				cout << "syntax or input error\n";
+				SetConsoleTextAttribute(hConsole, 15);
+				return "";
+			}
+			else {
+				sol += input[i];
+			}
+		}
+		return sol;
+	}
+	else if (Type == DataTypes[4]) {
+		int point = 0;
+		string sol = "";
+		int i = 0;
+		if (input[0] == '-') {
+			i = 1;
+			sol += '-';
+		}
+		for (; i < input.size() ; i++) {
+			if (!isdigit(input[i])) {
+				if (input[i] == '.'&&point==0) {
+					point++;
+				}
+				else {
+					SetConsoleTextAttribute(hConsole, 12);
+					cout << "syntax or input error\n";
+					SetConsoleTextAttribute(hConsole, 15);
+					return "";
+				}
+			}
+			else {
+				sol += input[i];
+			}
+		}
+		return sol;
+	}
+	else if (Type[0] == 'V') {
+		//VARCHAR
+		if (input.size()<3||input[0] != '\'' || input[input.size() - 1] != '\'') {
+			SetConsoleTextAttribute(hConsole, 12);
+			cout << "Varchar input error\n";
+			SetConsoleTextAttribute(hConsole, 15);
+			return "";
+		}
+		int len = 0;
+		for (int i = 7; i < Type.size() - 1; i++) {
+			len *= 10;
+			len += (Type[i] - '0');
+		}
+		if (input.size() > (len + 2)) {
+			SetConsoleTextAttribute(hConsole, 12);
+			cout << "input length is more than allow\n";
+			SetConsoleTextAttribute(hConsole, 15);
+			return "";
+		}
+		string sol="";
+		for (int i = 1; i < input.size() - 1; i++) {
+			sol += input[i];
+		}
+		return sol;
+	}
+	return "";
+}
+
+bool DeleteSubTable(string table, string db) {
+	ifstream ifile;
+	string str = " ";
+	char* ch = &str[0];
+	for (int i = 0; i < 101; i++) {
+		str = mainDirctory + "/" + db + "/" + table + "." + to_string(i) + ".t.km";
+		ch = &str[0];
+		remove(ch);
+	}
+	return 1;
+}
+
 bool SELECT() {
+	//SELECT * FROM Customers;
+	string who;
+	cin >> who;
+	if (who != "*") {
+		SetConsoleTextAttribute(hConsole, 12);
+		cout << "syntax error\n";
+		SetConsoleTextAttribute(hConsole, 14);
+		cout << "Showing results for certain rows is not available in this version of the program\n";
+		SetConsoleTextAttribute(hConsole, 15);
+		return 0;
+	}
+	string FROM;
+	cin >> FROM;
+	for (int i = 0; i < FROM.size(); i++) {
+		FROM[i] = toupper(FROM[i]);
+	}
+	if (FROM != "FROM") {
+		SetConsoleTextAttribute(hConsole, 12);
+		cout << "syntax error\n";
+		SetConsoleTextAttribute(hConsole, 15);
+		return 0;
+	}
+	string Table = "", strin;
+	cin >> strin;
+	int b = 0;
+	if (strin[strin.size() - 1] == ';') {
+		b = 1;
+	}
+	for (int i = 0; i < strin.size() - b; i++) {
+		Table += tolower(strin[i]);
+	}
+	if (!IfTableExist(Table)) {
+		SetConsoleTextAttribute(hConsole, 12);
+		cout << "Table is not Exist\n";
+		SetConsoleTextAttribute(hConsole, 15);
+		return 0;
+	}
+	int sz;
+	ifstream TbFile(mainDirctory + "/" + CurntlyDB + "/" + Table + ".t.km");
+	TbFile >> sz;
+	vector<pair<string, string>>TYlist(sz);
+	for (int i = 0; i < sz; i++) {
+		TbFile >> TYlist[i].first >> TYlist[i].second;
+	}
+	int PrimIdx;
+	TbFile >> PrimIdx;
+	TbFile.close();
+
+
+	if (b == 0) {
+		string Where;
+		cin >> Where;
+		if (Where != ";") {
+			int CondIdx = -1;
+			for (int i = 0; i < Where.size(); i++) {
+				Where[i] = toupper(Where[i]);
+			}
+			if (Where == "WHERE") {
+				string condition;
+				cin >> condition;
+				for (int i = 0; i < condition.size(); i++) {
+					condition[i] = tolower(condition[i]);
+				}
+				for (int i = 0; i < sz; i++) {
+					if (TYlist[i].first == condition) {
+						CondIdx = i;
+					}
+				}
+
+				if (CondIdx == -1) {
+					SetConsoleTextAttribute(hConsole, 12);
+					cout << "Field name not found\n";
+					SetConsoleTextAttribute(hConsole, 15);
+					return 0;
+				}
+				if (CondIdx != PrimIdx) {
+					SetConsoleTextAttribute(hConsole, 14);
+					cout << "In this version of the program, you cannot choose anything other than the primary key or show all in the table\n";
+					SetConsoleTextAttribute(hConsole, 15);
+					return 0;
+				}
+				char eq;
+				cin >> eq;
+				if (eq != '=') {
+					SetConsoleTextAttribute(hConsole, 12);
+					cout << "syntax error\n";
+					SetConsoleTextAttribute(hConsole, 15);
+					return 0;
+				}
+				string printerChk = "";
+				cin >> printerChk;
+				printerChk = inputDataType(printerChk, TYlist[CondIdx].second);
+				if (printerChk == "") {
+					SetConsoleTextAttribute(hConsole, 12);
+					cout << "condition input error\n";
+					SetConsoleTextAttribute(hConsole, 15);
+					return 0;
+				}
+				int packNum = HashIt(printerChk);
+				vector<string>sol, inSol(sz);
+				int datalen = 0;
+				ifstream subfile;
+				subfile.open(mainDirctory + "/" + CurntlyDB + "/" + Table + "." + to_string(packNum) + ".t.km");
+				if (subfile) {
+					subfile >> datalen;
+					for (int i = 0; i < datalen; i++) {
+						for (int j = 0; j < sz; j++) {
+							subfile >> inSol[j];
+						}
+						if (inSol[PrimIdx] == printerChk) {
+							sol = inSol;
+							break;
+						}
+					}
+					subfile.close();
+					if (sol.size() == 0) {
+						SetConsoleTextAttribute(hConsole, 14);
+						cout << "No data\n";
+						SetConsoleTextAttribute(hConsole, 15);
+						return 0;
+					}
+					for (int j = 0; j < sz; j++) {
+						cout << TYlist[j].first << '\t';
+					}
+					cout << "\t\n";
+					SetConsoleTextAttribute(hConsole, 9);
+					for (int j = 0; j < sz; j++) {
+						cout << sol[j] << '\t';
+					}
+					cout << "\t\n";
+					SetConsoleTextAttribute(hConsole, 15);
+					return 1;
+
+				}
+				SetConsoleTextAttribute(hConsole, 14);
+				cout << "No data\n";
+				SetConsoleTextAttribute(hConsole, 15);
+				return 0;
+
+			}
+			SetConsoleTextAttribute(hConsole, 12);
+			cout << "syntax error\n";
+			SetConsoleTextAttribute(hConsole, 15);
+			return 0;
+		}
+
+	}
+
+	vector<string>solin(sz);
+	vector<vector<string>>solPrint;
+
+	for (int i = 0; i < 101; i++) {
+		ifstream SubTbFile(mainDirctory + "/" + CurntlyDB + "/" + Table+"."+to_string(i) + ".t.km");
+		if (SubTbFile) {
+			int x;
+			SubTbFile >> x;
+			for (int k = 0; k < x; k++) {
+				for (int j = 0; j < sz; j++) {
+					SubTbFile >> solin[j];
+				}
+				solPrint.push_back(solin);
+			}
+			SubTbFile.close();
+		}
+	}
+	for (int i = 0; i < sz; i++) {
+		cout << TYlist[i].first << '\t';
+	}
+	cout << "\t\n";
+	for (int i = 0; i < solPrint.size(); i++) {
+		SetConsoleTextAttribute(hConsole, (9+(i%2)));
+		for (int j = 0; j < sz; j++) {
+			cout << solPrint[i][j]<<'\t';
+		}
+		cout << "\t\n";
+	}
+	SetConsoleTextAttribute(hConsole, 15);
+
+	
 	
 
-	return 0;
+	return 1;
 }
 
 bool DROP( ) {
@@ -295,8 +592,26 @@ bool DROP( ) {
 		else {
 			string str = mainDirctory + "/" + Suffix + "/" + Suffix + ".db.km";
 			char* ch = &str[0];
-			LPCSTR Pth = ch;
-			DeleteFileA(Pth);
+			int sz;
+			ifstream dbfile(ch);
+			dbfile >> sz;
+			string Table;
+				
+			for (int i = 0; i < sz; i++) {
+				dbfile >> Table;
+				DeleteSubTable(Table, Suffix);
+				str = mainDirctory + "/" + Suffix + "/" + Table + ".t.km";
+				ch = &str[0];
+				remove(ch);
+
+			}
+			dbfile.close();
+			str = mainDirctory + "/" + Suffix + "/" + Suffix + ".db.km";
+			ch = &str[0];
+			remove(ch);
+			str = mainDirctory + "/" + Suffix;
+			ch = &str[0];
+			_rmdir(ch);
 			ofstream dblistFile(mainDirctory + ".km");
 			dblistFile << dblist.size() - 1 << "\n";
 			for (string str : dblist) {
@@ -306,11 +621,46 @@ bool DROP( ) {
 			}
 			dblistFile.close();
 			loadDBList();
+			return 1;
+		}
+		return 0;
+	}
+	else if (Type == "TABLE") {
+		string Suffix;
+		cin >> Suffix;
+		for (int i = 0; i < Suffix.size(); i++) {
+			Suffix[i] = tolower(Suffix[i]);
+		}
+		if (!IfTableExist(Suffix)) {
+			cout << " Table is Not Created Already!!\n";
+			return 0;
+		}
+		else {
+			ifstream dbFile(mainDirctory + "/" + CurntlyDB + "/" + CurntlyDB + ".db.km");
+			int num;
+			dbFile >> num;
+			vector<string> ExTable(num);
+			for (int i = 0; i < num; i++) {
+				dbFile >> ExTable[i];
+			}
+			dbFile.close();
+			ofstream odbFile(mainDirctory + "/" + CurntlyDB + "/" + CurntlyDB + ".db.km");
+			odbFile << num - 1 << "\n";
+			for (int i = 0; i < num - 1; i++) {
+				if (ExTable[i] != Suffix) {
+					odbFile << ExTable[i]<<"\n";
+				}
+			}
+			odbFile.close();
+			string str = mainDirctory + "/" + CurntlyDB + "/" + Suffix + ".t.km";
+			char* ch = &str[0];
+			LPCSTR Pth = ch;
+			DeleteFileA(Pth);
+			DeleteSubTable(Suffix, CurntlyDB);
+			return 1;
 
 		}
-
 	}
-	
 
 	return 0;
 }
@@ -383,13 +733,134 @@ bool CREATE( ) {
 
 	return 0;
 }
-bool UPDATE( ) {
-	
 
-	return 0;
-}
-bool INSERT( ) {
+bool INSERT() {
+
+	string Suffix;
+	cin >> Suffix;
 	
+	for (int j = 0; j < Suffix.size();j++) {
+		Suffix[j] = tolower(Suffix[j]);
+		
+	}
+
+	if (IfTableExist(Suffix)) {
+		string val;
+		cin >> val;
+		if (val.size() != 6) {
+
+			SetConsoleTextAttribute(hConsole, 12);
+			cout << "syntax error\n";
+			SetConsoleTextAttribute(hConsole, 15);
+			return 0;
+		}
+	
+		for (int j = 0; j < val.size();j++) {
+			val[j] = toupper(val[j]);
+		}
+		if (val == "VALUES") {
+			char ch;
+			cin >> ch;
+			if (ch != '(') {
+				SetConsoleTextAttribute(hConsole, 12);
+				cout << "syntax error\n";
+				SetConsoleTextAttribute(hConsole, 15);
+				return 0;
+			}
+			int sz;
+			ifstream TbFile(mainDirctory + "/" + CurntlyDB + "/" + Suffix + ".t.km");
+			TbFile >> sz;
+			vector<string>v, TYlist(sz);
+			string str;
+			for (int i = 0; i < sz; i++) {
+				TbFile >> str >> TYlist[i];
+			}
+			while (v.size() < sz-1) {
+				cin >> str;
+				if (str[str.size() - 1] != ',') {
+					SetConsoleTextAttribute(hConsole, 12);
+					cout << "syntax or input error\n";
+					SetConsoleTextAttribute(hConsole, 15);
+					return 0;
+				}
+				str.pop_back();
+				v.push_back(str);
+			}
+			cin >> str;
+			v.push_back(str);
+			if (v[v.size() - 1][v[v.size() - 1].size() - 1] != ')') {
+				SetConsoleTextAttribute(hConsole, 12);
+				cout << "syntax error\n";
+				SetConsoleTextAttribute(hConsole, 15);
+				return 0;
+			}
+			v[v.size()-1].pop_back();
+			for (int i = 0; i < sz; i++) {
+
+				v[i]=inputDataType(v[i], TYlist[i]);
+				if (v[i] == "") {
+					return 0;
+				}
+			}
+			int primIdx;
+			TbFile >> primIdx;
+			TbFile.close();
+			int packNum=HashIt(v[primIdx]);
+			vector<vector<string>>oldData;
+			int datalen = 0;
+			ifstream subfile;
+			subfile.open(mainDirctory + "/" + CurntlyDB + "/" + Suffix+ "." + to_string(packNum) + ".t.km");
+			if (subfile) {
+				subfile >> datalen;
+				vector<vector<string>>inoldData(datalen, vector<string>(sz));
+				for (int i = 0; i < datalen; i++) {
+					for (int j = 0; j < sz; j++) {
+						subfile >> inoldData[i][j];
+					}
+				}
+				oldData = inoldData;
+			}
+			subfile.close();
+			for (int i = 0; i < datalen; i++) {
+				if (oldData[i][primIdx] == v[primIdx]) {
+
+					SetConsoleTextAttribute(hConsole, 12);
+					cout << "Duplicate primary key\n";
+					SetConsoleTextAttribute(hConsole, 15);
+					return 0;
+				}
+			}
+			ofstream Osubfile;
+			Osubfile.open(mainDirctory + "/" + CurntlyDB + "/" + Suffix + "." + to_string(packNum) + ".t.km");
+			Osubfile << oldData.size() + 1 << '\n';
+			if (oldData.size()!=0) {
+				for (int i = 0; i < datalen; i++) {
+					for (int j = 0; j < sz; j++) {
+						Osubfile <<oldData[i][j]<<" ";
+					}
+					Osubfile << "\n";
+				}
+			}
+
+			for (int j = 0; j < sz; j++) {
+				Osubfile << v[j] << " ";
+			}
+			Osubfile << "\n";
+			Osubfile.close();
+
+			SetConsoleTextAttribute(hConsole, 10);
+			cout << "Done\n";
+			SetConsoleTextAttribute(hConsole, 15);
+
+			return 1;
+
+		}
+
+		SetConsoleTextAttribute(hConsole, 12);
+		cout << "syntax error\n";
+		SetConsoleTextAttribute(hConsole, 15);
+		return 0;
+	}
 
 	return 0;
 }
@@ -433,7 +904,9 @@ void ShTables() {
 void stup() {
 	ifstream ifile;
 	ifile.open(mainDirctory + ".km");
-	if (ifile) { }
+	if (ifile) {
+		ifile.close();
+	}
 	else {
 
 		_mkdir("C:/Kamat");
@@ -471,9 +944,6 @@ int main() {
 
 		if (Quary == "SELECT") {
 			SELECT();
-		}
-		else if (Quary == "UPDATE") {
-			UPDATE();
 		}
 		else if (Quary == "DELETE") {
 			KMDELETE();
