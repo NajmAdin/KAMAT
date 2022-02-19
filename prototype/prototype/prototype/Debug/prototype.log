@@ -1,0 +1,8 @@
+﻿  Source.cpp
+E:\project\Graduation Project\prototype\prototype\prototype\Source.cpp(65,20): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\prototype\prototype\prototype\Source.cpp(72,21): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\prototype\prototype\prototype\Source.cpp(77,21): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\prototype\prototype\prototype\Source.cpp(181,21): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\prototype\prototype\prototype\Source.cpp(196,22): warning C4018: '<': signed/unsigned mismatch
+E:\project\Graduation Project\prototype\prototype\prototype\Source.cpp(219,22): warning C4018: '<': signed/unsigned mismatch
+  prototype.vcxproj -> E:\project\Graduation Project\prototype\prototype\Debug\prototype.exe

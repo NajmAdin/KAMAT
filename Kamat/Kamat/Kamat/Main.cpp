@@ -694,7 +694,7 @@ bool CREATE( ) {
 		}
 		else {
 			if (Createdb(Suffix)) {
-				return 0;
+				return 1;
 			}
 			else {
 				cout << "can not create database!!\n";
@@ -869,6 +869,11 @@ bool KMDELETE( ) {
 
 	return 0;
 }
+bool UPDATE() {
+
+
+	return 0;
+}
 bool USE() {
 	string Suffix;
 	cin >> Suffix;
@@ -901,7 +906,8 @@ void ShTables() {
 	}
 }
 
-void stup() {
+void setup() {
+	SetConsoleTextAttribute(hConsole, 15);
 	ifstream ifile;
 	ifile.open(mainDirctory + ".km");
 	if (ifile) {
@@ -924,7 +930,7 @@ void stup() {
 }
 
 int main() {
-	stup();
+	setup();
 
 
 
@@ -963,6 +969,9 @@ int main() {
 		}
 		else if (Quary == "DROP") {
 			DROP();
+		}
+		else if (Quary == "UPDATE") {
+			UPDATE();
 		}
 		else if (Quary == "CREATE") {
 			CREATE();
