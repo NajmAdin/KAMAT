@@ -99,6 +99,9 @@ bool CREATE() {
 	else if (Type == "TABLE") {
 		return 0;
 	}
+	else {
+		cout << "syntax error\n";
+	}
 	return 0;
 }
 
