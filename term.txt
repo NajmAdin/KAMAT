@@ -1,0 +1,44 @@
+g++ ./'linux version'/Kamat.cpp -o ./'linux version'/Kamat
+./'linux version'/Kamat 
+
+git push -u origin main
+git commit -m "note"
+
+
+
+
+cout<<"\033[31;34mStart\033[0m\n";
+
+cout << "\033[31;31msyntax error\033[0m\n";
+
+cout << "\033[31;32mDone\033[0m\n";
+
+/*
+
+         foreground background
+black        30         40
+red          31         41
+green        32         42
+yellow       33         43
+blue         34         44
+magenta      35         45
+cyan         36         46
+white        37         47
+
+*/
+
+/*
+	console Handler
+					to write read
+					SetConsoleTextAttribute(hConsole, 12);
+				cout << "syntax error\n";
+				to write white
+				SetConsoleTextAttribute(hConsole, 15);
+				green
+				SetConsoleTextAttribute(hConsole, 10);
+				yallow
+				SetConsoleTextAttribute(hConsole, 14);
+                blue
+                SetConsoleTextAttribute(hConsole, 9);
+
+*/

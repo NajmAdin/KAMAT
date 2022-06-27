@@ -984,6 +984,9 @@ int main() {
 				Suffix[i] = toupper(Suffix[i]);
 			}
 			if (Suffix == "DATABASES") {
+				if (dblist.size() == 0) {
+					cout << "NO DATABASES\n";
+				}
 				for (string str : dblist) {
 					cout << str << "\n";
 				}
