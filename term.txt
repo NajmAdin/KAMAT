@@ -1,7 +1,7 @@
 g++ ./'linux version'/Kamat.cpp -o ./'linux version'/Kamat
 ./'linux version'/Kamat 
 
-git push -u origin main
+git push -u origin master
 git commit -m "note"
 
 

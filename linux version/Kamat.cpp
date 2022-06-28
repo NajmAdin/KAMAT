@@ -247,7 +247,7 @@ bool Create_Table(string Name)
 			string TYBack = RegularDataType(TY);
 			if (TYBack == "non")
 			{
-				cout << "\033[31;31msyntax error\033[0m\n";
+				cout << "\033[31;31msyntax error.\033[0m\n";
 				return 0;
 			}
 			else
@@ -564,12 +564,12 @@ bool SELECT()
 						cout << "\033[31;36m" << TYlist[j].first << "\t";
 					}
 					cout << "\033[0m\t\n";
-					cout << "\033[31;34m";
+					
 					for (int j = 0; j < sz; j++)
 					{
-						cout << sol[j] << '\t';
+						cout << sol[j] << "\t\t";
 					}
-					cout << "\033[0m\n\t\n";
+					cout << "\033[0m\t\n";
 
 					return 1;
 				}
@@ -984,6 +984,138 @@ bool INSERT()
 }
 bool KMDELETE()
 {
+	string Table;
+	cin >> Table;
+	for (int i = 0; i < Table.size(); i++)
+	{
+		Table[i] = tolower(Table[i]);
+	}
+	if (!IfTableExist(Table))
+	{
+		cout << "\033[31;31mTable Not Exist\033[0m\n";
+		return 0;
+	}
+	string wr;
+	cin >> wr;
+	for (int i = 0; i < wr.size(); i++)
+	{
+		wr[i] = toupper(wr[i]);
+	}
+	if (wr != "WHERE")
+	{
+		cout << "\033[31;31msyntax error\033[0m\n";
+		return 0;
+	}
+	int sz;
+	ifstream TbFile(mainDirctory + "/" + CurntlyDB + "/" + Table + ".t.km");
+	TbFile >> sz;
+	vector<pair<string, string>> TYlist(sz);
+	for (int i = 0; i < sz; i++)
+	{
+		TbFile >> TYlist[i].first >> TYlist[i].second;
+	}
+	int PrimIdx;
+	TbFile >> PrimIdx;
+	TbFile.close();
+
+	int CondIdx = -1;
+	string condition;
+	cin >> condition;
+	for (int i = 0; i < condition.size(); i++)
+	{
+		condition[i] = tolower(condition[i]);
+	}
+	for (int i = 0; i < sz; i++)
+	{
+		if (TYlist[i].first == condition)
+		{
+			CondIdx = i;
+		}
+	}
+
+	if (CondIdx == -1)
+	{
+
+		cout << "\033[31;31mField name not found\033[0m\n";
+
+		return 0;
+	}
+	if (CondIdx != PrimIdx)
+	{
+
+		cout << "\033[31;33mIn this version of the program, you cannot delete anything other than the primary key you can show all in the table first to know the primary key \033[0m\n";
+
+		return 0;
+	}
+	char eq;
+	cin >> eq;
+	if (eq != '=')
+	{
+
+		cout << "\033[31;31msyntax error no > or < in this version\033[0m\n";
+
+		return 0;
+	}
+	string printerChk = "";
+	cin >> printerChk;
+	printerChk = inputDataType(printerChk, TYlist[CondIdx].second);
+	if (printerChk == "")
+	{
+
+		cout << "\033[31;31mcondition input error\033[0m\n";
+
+		return 0;
+	}
+	int packNum = HashIt(printerChk);
+	int datalen = 0, delIdx = -1;
+	ifstream subfile;
+	subfile.open(mainDirctory + "/" + CurntlyDB + "/" + Table + "." + to_string(packNum) + ".t.km");
+	if (subfile)
+	{
+		subfile >> datalen;
+		vector<vector<string>> oldData(datalen,vector<string>(sz));
+		for (int i = 0; i < datalen; i++)
+		{
+			for (int j = 0; j < sz; j++)
+			{
+				subfile >> oldData[i][j];
+			}
+			if (oldData[i][PrimIdx] == printerChk)
+			{
+				delIdx = i;
+			}
+		}
+		subfile.close();
+		if (delIdx == -1)
+		{
+
+			cout << "\033[31;33mNo data to delete\033[0m\n";
+
+			return 1;
+		}
+		ofstream Osubfile;
+		Osubfile.open(mainDirctory + "/" + CurntlyDB + "/" + Table + "." + to_string(packNum) + ".t.km");
+		Osubfile << oldData.size() - 1 << '\n';
+		if (oldData.size() != 0)
+		{
+			for (int i = 0; i < datalen; i++)
+			{
+				for (int j = 0; j < sz; j++)
+				{
+					Osubfile << oldData[i][j] << " ";
+				}
+				Osubfile << "\n";
+			}
+		}
+		Osubfile.close();
+
+		cout << "\033[31;32mDone\033[0m\n";
+
+		return 1;
+
+	}
+
+	cout << "\033[31;33mNo data to delete\033[0m\n";
 
 	return 0;
 }
@@ -1126,6 +1258,7 @@ int main()
 		}
 		else if (Quary == "CREATE")
 		{
+
 			CREATE();
 		}
 		// SHOW DATABASES;
