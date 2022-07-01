@@ -5,7 +5,7 @@ CREATE TABLE users (
    email VARCHAR(255))
 
 
-INSERT INTO users VALUES ( 1, 'najm', 'password', 'email12')
+INSERT INTO users VALUES ( 2, 'najm', 'password', 'email')
 
 SELECT * FROM users WHERE userid = 1
 DELETE FROM users WHERE userid =1

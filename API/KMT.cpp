@@ -9,8 +9,35 @@
 #include <sys/types.h>
 #include <filesystem>
 #include <unistd.h>
+#include "KMT.hpp"
 
 using namespace std;
+
+int KMT::USE(string DataBaseName){
+	
+	for (int i = 0; i < DataBaseName.size(); i++)
+	{
+		DataBaseName[i] = tolower(DataBaseName[i]);
+	}
+	for (string str : dblist)
+	{
+		if (str == DataBaseName)
+		{
+			CurntlyDB = DataBaseName;
+			return 0;
+		}
+	}
+	return 1;
+}
+
+KMT::KMT(string DataBaseName){
+	USE(DataBaseName);
+}
+
+string KMT::getError(int Error){
+	return ErrorList[Error];
+}
+
 
 string const mainDirctory = "/Kamat/DataBases";
 vector<string> dblist;
@@ -563,16 +590,13 @@ bool SELECT()
 					{
 						cout << "\033[31;36m" << TYlist[j].first << "\t";
 					}
+					cout << "\033[0m\t\n";
 					
-
-					cout << "\n\033[31;34m";
 					for (int j = 0; j < sz; j++)
 					{
-						
-					
-						cout << sol[j] << "\t";
+						cout << sol[j] << "\t\t";
 					}
-					cout << "\033[0m\n";
+					cout << "\033[0m\t\n";
 
 					return 1;
 				}
@@ -1076,7 +1100,7 @@ bool KMDELETE()
 	if (subfile)
 	{
 		subfile >> datalen;
-		vector<vector<string>> oldData(datalen, vector<string>(sz));
+		vector<vector<string>> oldData(datalen,vector<string>(sz));
 		for (int i = 0; i < datalen; i++)
 		{
 			for (int j = 0; j < sz; j++)
@@ -1115,6 +1139,7 @@ bool KMDELETE()
 		cout << "\033[31;32mDone\033[0m\n";
 
 		return 1;
+
 	}
 
 	cout << "\033[31;33mNo data to delete\033[0m\n";
@@ -1164,43 +1189,18 @@ void ShTables()
 	}
 }
 
-// Header of the CLI
-void Header()
-{
-	cout << "\033[31;31m***************************************************************************\n";
-	cout << "\033[31;32m                              Welcome\n";
-	cout << "\033[31;31m===========================================================================\n";
-	cout << "###########################################################################\n";
-	cout << "===========================================================================\n";
-	cout << "\033[31;32m       Faculty of Computers and Information, Assiut University\n";
-	cout << "\033[31;31m===========================================================================\n";
-	cout << "###########################################################################\n";
-	cout << "===========================================================================\n";
-	cout << "\033[31;36m                         This is Kamat Project\n";
-	cout << "\033[31;32m                - The desired result is supposed to be\n";
-	cout << "\033[31;34m                              \"Tiny DBMS\"";
-	cout << "\033[31;32m\n	      for programs that represent a Small database\n";
-	cout << "\033[31;31m===========================================================================\n";
-	cout << "###########################################################################\n";
-	cout << "===========================================================================\n";
-}
 void setup()
 {
-	Header();
-	cout << "\033[31;33m***************************************************************************\n";
-	cout << "                              Check System\n";
+
 	ifstream ifile;
 	ifile.open(mainDirctory + ".km");
 	if (ifile)
 	{
-		cout << "\033[31;32m***************************************************************************\n";
-		cout << "                              Done\n";
 		ifile.close();
 	}
 	else
 	{
-		cout << "\033[31;33m***************************************************************************\n";
-		cout << "                              first Time Use\n                         Welcome to our Software\n";
+		cout << "\033[31;44mfirst Use\033[0m\n";
 		mkdir("/Kamat", 0777);
 		mkdir("/Kamat/DataBases", 0777);
 
@@ -1209,125 +1209,12 @@ void setup()
 		MyFile << "0\n";
 
 		MyFile.close();
-		Createdb("any");
 	}
 
 	loadDBList();
 	CurntlyDB = "any";
-	cout << "\033[31;33m" << CurntlyDB << " is in use now\033[0m\n";
 }
 int main()
 {
-	setup();
-
-	string Quary;
-
-	while (true)
-	{
-		cout << "\033[31;37m***************************************************************************\n";
-
-		cin >> Quary;
-
-		for (int i = 0; i < Quary.size(); i++)
-		{
-			Quary[i] = toupper(Quary[i]);
-		}
-		// cout << Quary << "\n";
-
-		if (Quary == "SELECT")
-		{
-			SELECT();
-		}
-		else if (Quary == "DELETE")
-		{
-
-			string Suffix;
-			cin >> Suffix;
-			for (int i = 0; i < Suffix.size(); i++)
-			{
-				Suffix[i] = toupper(Suffix[i]);
-			}
-			if (Suffix == "FROM")
-			{
-				KMDELETE();
-			}
-			else
-			{
-				cout << "\033[31;31msyntax error\033[0m\n";
-			}
-		}
-		else if (Quary == "INSERT")
-		{
-			string Suffix;
-			cin >> Suffix;
-			for (int i = 0; i < Suffix.size(); i++)
-			{
-				Suffix[i] = toupper(Suffix[i]);
-			}
-			if (Suffix == "INTO")
-			{
-				INSERT();
-			}
-			else
-			{
-				cout << "\033[31;31msyntax error\033[0m\n";
-			}
-		}
-		else if (Quary == "DROP")
-		{
-			DROP();
-		}
-		else if (Quary == "CREATE")
-		{
-
-			CREATE();
-		}
-		// SHOW DATABASES;
-		else if (Quary == "SHOW")
-		{
-			string Suffix;
-			cin >> Suffix;
-			for (int i = 0; i < Suffix.size(); i++)
-			{
-				Suffix[i] = toupper(Suffix[i]);
-			}
-			if (Suffix == "DATABASES")
-			{
-				for (string str : dblist)
-				{
-					cout << str << "\n";
-				}
-			}
-			else if (Suffix == "TABLES")
-			{
-				ShTables();
-			}
-			else
-			{
-
-				cout << "\033[31;31msyntax error\033[0m\n";
-			}
-		}
-		else if (Quary == "USE")
-		{
-			if (USE())
-			{
-				cout << "\033[31;32m";
-				cout << CurntlyDB << " is in use now\033[0m\n";
-			}
-			else
-			{
-				cout << "\033[31;31mNot in the databases list !!\033[0m\n";
-			}
-		}
-		else if (Quary == "EXIT")
-		{
-			cout << "\033[31;36mBye\033[0m\n";
-			break;
-		}
-		else
-		{
-			cout << "\033[31;31msyntax error\033[0m\n";
-		}
-	}
+	
 }
