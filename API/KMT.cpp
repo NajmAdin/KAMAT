@@ -13,8 +13,9 @@
 
 using namespace std;
 
-int KMT::USE(string DataBaseName){
-	
+int KMT::USE(string DataBaseName)
+{
+
 	for (int i = 0; i < DataBaseName.size(); i++)
 	{
 		DataBaseName[i] = tolower(DataBaseName[i]);
@@ -30,23 +31,32 @@ int KMT::USE(string DataBaseName){
 	return 1;
 }
 
-KMT::KMT(string DataBaseName){
+KMT::KMT(string DataBaseName)
+{
 	USE(DataBaseName);
+	loadDBList();
 }
 
-string KMT::getError(int Error){
+string KMT::getError(int Error)
+{
 	return ErrorList[Error];
 }
 
+void KMT::ShTables(vector<string> &TablesList)
+{
+	ifstream dbFile(mainDirctory + "/" + CurntlyDB + "/" + CurntlyDB + ".db.km");
+	int num;
+	dbFile >> num;
+	string ExTable;
+	for (int i = 0; i < num; i++)
+	{
+		dbFile >> ExTable;
+		TablesList.push_back(ExTable);
+	}
+	dbFile.close();
+}
 
-string const mainDirctory = "/Kamat/DataBases";
-vector<string> dblist;
-string CurntlyDB;
-vector<string> DataTypes = {"BOOL", "BOOLEAN", "INT", "INTEGER", "FLOAT"};
-string VarCh = "VARCHAR";
-string PKey[2] = {"primary", "key"};
-
-int HashIt(string s)
+int KMT::HashIt(string s)
 {
 	long long res = 0;
 	for (int i = 0; i < s.size(); i++)
@@ -56,7 +66,7 @@ int HashIt(string s)
 	return (res % 101);
 }
 
-void loadDBList()
+void KMT::loadDBList()
 {
 	dblist.clear();
 	ifstream dblistfile(mainDirctory + ".km");
@@ -70,6 +80,17 @@ void loadDBList()
 	}
 	dblistfile.close();
 }
+
+
+string const mainDirctory = "/Kamat/DataBases";
+vector<string> dblist;
+string CurntlyDB;
+vector<string> DataTypes = {"BOOL", "BOOLEAN", "INT", "INTEGER", "FLOAT"};
+string VarCh = "VARCHAR";
+string PKey[2] = {"primary", "key"};
+
+
+
 
 bool Createdb(string name)
 {
@@ -429,7 +450,6 @@ string inputDataType(string input, string Type)
 
 bool DeleteSubTable(string table, string db)
 {
-	ifstream ifile;
 	string str = " ";
 	char *ch = &str[0];
 	for (int i = 0; i < 101; i++)
@@ -591,7 +611,7 @@ bool SELECT()
 						cout << "\033[31;36m" << TYlist[j].first << "\t";
 					}
 					cout << "\033[0m\t\n";
-					
+
 					for (int j = 0; j < sz; j++)
 					{
 						cout << sol[j] << "\t\t";
@@ -1100,7 +1120,7 @@ bool KMDELETE()
 	if (subfile)
 	{
 		subfile >> datalen;
-		vector<vector<string>> oldData(datalen,vector<string>(sz));
+		vector<vector<string>> oldData(datalen, vector<string>(sz));
 		for (int i = 0; i < datalen; i++)
 		{
 			for (int j = 0; j < sz; j++)
@@ -1139,7 +1159,6 @@ bool KMDELETE()
 		cout << "\033[31;32mDone\033[0m\n";
 
 		return 1;
-
 	}
 
 	cout << "\033[31;33mNo data to delete\033[0m\n";
@@ -1147,74 +1166,9 @@ bool KMDELETE()
 	return 0;
 }
 
-bool USE()
-{
-	string Suffix;
-	cin >> Suffix;
-	for (int i = 0; i < Suffix.size(); i++)
-	{
-		Suffix[i] = tolower(Suffix[i]);
-	}
-	for (string str : dblist)
-	{
-		if (str == Suffix)
-		{
-			CurntlyDB = Suffix;
-			return true;
-		}
-	}
-	return 0;
-}
 
-void ShTables()
-{
-	ifstream dbFile(mainDirctory + "/" + CurntlyDB + "/" + CurntlyDB + ".db.km");
-	int num;
-	dbFile >> num;
-	if (num != 0)
-	{
-		cout << "\033[31;36mTables List\033[0m\n";
-		string ExTable;
-		cout << "\033[31;34m";
-		for (int i = 0; i < num; i++)
-		{
-			dbFile >> ExTable;
-			cout << ExTable << "\n";
-		}
-		cout << "\033[0m";
-	}
-	else
-	{
-		cout << "\033[31;31mNo Tables\033[0m\n";
-	}
-}
 
-void setup()
-{
 
-	ifstream ifile;
-	ifile.open(mainDirctory + ".km");
-	if (ifile)
-	{
-		ifile.close();
-	}
-	else
-	{
-		cout << "\033[31;44mfirst Use\033[0m\n";
-		mkdir("/Kamat", 0777);
-		mkdir("/Kamat/DataBases", 0777);
-
-		ofstream MyFile(mainDirctory + ".km");
-
-		MyFile << "0\n";
-
-		MyFile.close();
-	}
-
-	loadDBList();
-	CurntlyDB = "any";
-}
 int main()
 {
-	
 }

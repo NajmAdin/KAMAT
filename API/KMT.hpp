@@ -8,6 +8,7 @@ class KMT
     KMT(string DataBaseName);
     int USE(string DataBaseName);
     string getError(int Error);
+    void ShTables(vector<string>&TablesList);
     private:
     string const mainDirctory = "/Kamat/DataBases";
     vector<string> dblist;
@@ -17,6 +18,10 @@ class KMT
     string PKey[2] = {"primary", "key"};
     //                          0           1           
     vector<string>ErrorList={"non","DataBase not found"};
+
+   int HashIt(string s);
+   void loadDBList();
+
 };
 
 #endif

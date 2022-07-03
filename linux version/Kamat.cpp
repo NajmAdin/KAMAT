@@ -12,7 +12,8 @@
 
 using namespace std;
 
-string const mainDirctory = "/Kamat/DataBases";
+string const userHome = getenv("HOME");
+string mainDirctory = userHome+"/Kamat/DataBases";
 vector<string> dblist;
 string CurntlyDB;
 vector<string> DataTypes = {"BOOL", "BOOLEAN", "INT", "INTEGER", "FLOAT"};
@@ -63,7 +64,7 @@ bool Createdb(string name)
 	dblist.push_back(name);
 	dblistfile << name << "\n";
 	dblistfile.close();
-	string str = "/Kamat/DataBases/" + name;
+	string str = mainDirctory + "/" + name;
 	char *arr;
 	arr = &str[0];
 	mkdir(arr, 0777);
@@ -1162,6 +1163,7 @@ void ShTables()
 	{
 		cout << "\033[31;31mNo Tables\033[0m\n";
 	}
+	dbFile.close();
 }
 
 // Header of the CLI
@@ -1201,8 +1203,17 @@ void setup()
 	{
 		cout << "\033[31;33m***************************************************************************\n";
 		cout << "                              first Time Use\n                         Welcome to our Software\n";
-		mkdir("/Kamat", 0777);
-		mkdir("/Kamat/DataBases", 0777);
+		string str=(userHome+"/Kamat");
+       /* cout<<str<<"1\n";*/
+        char const *comand = &str[0];
+       // system(comand);
+
+        /*system("pwd");*/
+        mkdir(comand, 0777);
+
+        str=(mainDirctory);
+        comand = &str[0];
+		mkdir(comand, 0777);
 
 		ofstream MyFile(mainDirctory + ".km");
 
