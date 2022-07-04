@@ -751,6 +751,8 @@ bool DROP()
 			return 1;
 		}
 	}
+	
+	cout << "\033[31;31msyntax error\033[0m\n";
 
 	return 0;
 }
@@ -834,9 +836,11 @@ bool CREATE()
 			else
 			{
 				Create_Table(Suffix);
+				return 1;
 			}
 		}
 	}
+	cout << "\033[31;31msyntax error\033[0m\n";
 
 	return 0;
 }
@@ -1304,10 +1308,13 @@ int main()
 			}
 			if (Suffix == "DATABASES")
 			{
+				cout << "\033[31;36mDataBase List\033[0m\n";
+
 				for (string str : dblist)
 				{
-					cout << str << "\n";
+					cout <<"\033[31;34m"<< str << "\n";
 				}
+				cout<<"\033[0m";
 			}
 			else if (Suffix == "TABLES")
 			{

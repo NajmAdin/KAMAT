@@ -8,7 +8,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <filesystem>
-#include <unistd.h>
+#include <direct.h>
 
 using namespace std;
 class KMT
@@ -34,8 +34,7 @@ public:
 
 	KMT(string DataBaseName)
 	{
-		userHome = getenv("HOME");
-		mainDirctory = userHome + "/Kamat/DataBases";
+		mainDirctory = "C:/Kamat/DataBases";
 		DataTypes = {"BOOL", "BOOLEAN", "INT", "INTEGER", "FLOAT"};
 		VarCh = "VARCHAR";
 		PKey[0] = "primary";
@@ -117,7 +116,7 @@ public:
 		string str = mainDirctory + "/" + name;
 		char *arr;
 		arr = &str[0];
-		mkdir(arr, 0777);
+		_mkdir(arr);
 		ofstream dbFile(mainDirctory + "/" + name + "/" + name + ".db.km");
 		dbFile << "0\n";
 		dbFile.close();
@@ -468,7 +467,7 @@ public:
 				remove(ch);
 				str = mainDirctory + "/" + name;
 				ch = &str[0];
-				rmdir(ch);
+				_rmdir(ch);
 				ofstream dblistFile(mainDirctory + ".km");
 				dblistFile << dblist.size() - 1 << "\n";
 				for (string str : dblist)
