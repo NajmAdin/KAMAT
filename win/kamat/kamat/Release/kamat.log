@@ -1,0 +1,45 @@
+﻿  Source.cpp
+  The contents of <filesystem> are available only with C++17 or later.
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(28,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(134,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(138,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(146,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(165,13): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(212,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(220,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(226,22): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(279,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(324,12): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(350,12): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(384,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(389,20): warning C4018: '>': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(397,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(436,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(454,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(484,22): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(492,23): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(620,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(647,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(656,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(718,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(765,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(774,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(780,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(812,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(817,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(854,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(871,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(895,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(997,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(1008,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(1032,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(1134,20): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(1246,21): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(1261,22): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(1278,22): warning C4018: '<': signed/unsigned mismatch
+F:\project\Graduation Project\win\kamat\kamat\Source.cpp(1305,22): warning C4018: '<': signed/unsigned mismatch
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 511 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  kamat.vcxproj -> F:\project\Graduation Project\win\kamat\Release\kamat.exe
