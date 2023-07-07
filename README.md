@@ -16,12 +16,19 @@
 
                                     This is Kamat Project 
 -The desired result is supposed to be "Tiny DBMS" for programs that represent a Small database
+
+
 Kamat is a small database management system.
+
 It is used to manage small databases in:
+
       -Programmes that read/write small data 
       -Devices have very low ram
+      
 Written in C++ for speed and accuracy
+
 Works in both linux and windows 
+
 
 ========================================================================================
 ****************************************************************************************
